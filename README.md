@@ -4,7 +4,7 @@ An interactive WebGL project that renders stylized **B** and **A** initials and 
 
 ## Live Demo
 
-Open WebGL Initials Playground
+[Open WebGL Initials Playground](https://justbesa.github.io/webgl-initials-playground/)
 
 ## Features
 
