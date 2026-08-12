@@ -2,6 +2,10 @@
 
 An interactive WebGL project that renders stylized **B** and **A** initials and allows real-time manipulation through simple controls.
 
+## Live Demo
+
+Open WebGL Initials Playground
+
 ## Features
 
 * Real-time RGB color control
