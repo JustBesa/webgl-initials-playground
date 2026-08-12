@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>WebGL Initials Playground</title>
+    <script src="Common/webgl-utils.js"></script>
+    <script src="Common/MV.js"></script>
+    <script src="Common/initShaders.js"></script>
+    <script src="main.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2c3e50);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            color: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        canvas {
+            border: none;
+            border-radius: 15px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 25px;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 25px 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px 20px;
+            max-width: 520px;
+            width: 400px;
+            height: 450px;
+            position: relative;
+        }
+
+        .controls label {
+            font-weight: 500;
+            color: #ddd;
+        }
+
+        .controls input[type="range"] {
+            width: 100%;
+            accent-color: #4db6ac;
+            cursor: pointer;
+        }
+
+        .section-title {
+            grid-column: span 2;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 15px;
+            padding-bottom: 5px;
+            color: #4db6ac;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #4db6ac;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -6px;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #ccc;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        #resetBtn {
+            grid-column: span 2;
+            margin-top: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #4db6ac;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #resetBtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+
+            border: none;
+            background: #4db6ac;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: 0.2s;
+        }
+
+        #resetBtn:hover {
+            background: #3aa79d;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>WebGL Initials Playground</h1>
+    <div class="main-container">
+        <canvas id="gl-canvas" width="500" height="500"></canvas>
+
+        <div class="controls">
+            <!-- Color Section -->
+            <div class="section-title">Color</div>
+
+            <label for="redSlider">Red:</label>
+            <input type="range" id="redSlider" min="0" max="1" step="0.01" value="0.5">
+
+            <label for="greenSlider">Green:</label>
+            <input type="range" id="greenSlider" min="0" max="1" step="0.01" value="0.5">
+
+            <label for="blueSlider">Blue:</label>
+            <input type="range" id="blueSlider" min="0" max="1" step="0.01" value="0.5">
+
+            <!-- Transformation Section -->
+            <div class="section-title">Transformations</div>
+
+            <label for="posX">Position X:</label>
+            <input type="range" id="posX" min="-1" max="1" step="0.01" value="0">
+
+            <label for="posY">Position Y:</label>
+            <input type="range" id="posY" min="-1" max="1" step="0.01" value="0">
+
+            <label for="scaleX">Scale X:</label>
+            <input type="range" id="scaleX" min="0.1" max="2" step="0.1" value="1">
+
+            <label for="scaleY">Scale Y:</label>
+            <input type="range" id="scaleY" min="0.1" max="2" step="0.1" value="1">
+
+            <!-- Reset Button -->
+            <button id="resetBtn">⟳</button>
+            
+        </div>
+    </div>
+
+
+    <!-- Vertex Shader -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        uniform vec2 uTranslation;
+        uniform vec2 uScale;
+
+        void main() {
+            vec2 scaled = vPosition.xy * uScale;
+            vec2 moved = scaled + uTranslation;
+            gl_Position = vec4(moved, 0.0, 1.0);
+        }
+    </script>
+
+    <!-- Fragment Shader -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        uniform vec3 uColor;
+        void main() {
+            gl_FragColor = vec4(uColor, 1.0);
+        }
+    </script>
+
+</body>
+</html>
